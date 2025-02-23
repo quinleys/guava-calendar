@@ -1,5 +1,6 @@
 {
-    "name": "guava/calendar",
+    "name": "quinleys/guava-calendar",
+    "type": "library",
     "description": "Adds support for vkurko/calendar to Filament PHP.",
     "keywords": [
         "Guava",
