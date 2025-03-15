@@ -12,6 +12,8 @@
     $hasDateClickContextMenu = !empty($this->getCachedDateClickContextMenuActions());
     $hasDateSelectContextMenu = !empty($this->getCachedDateSelectContextMenuActions());
     $hasEventClickContextMenu = !empty($this->getCachedEventClickContextMenuActions());
+    $hasFreeEventClickContextMenu = !empty($this->getCachedFreeEventClickContextMenuActions());
+    $hasMyEventClickContextMenu = !empty($this->getCachedMyEventClickContextMenuActions());
     $hasNoEventsClickContextMenu = !empty($this->getCachedNoEventsClickContextMenuActions());
 
     $dayHeaderFormatJs = $this->getDayHeaderFormatJs();
@@ -36,7 +38,7 @@
             }
 
             & .ec-now-indicator {
-                z-index:40;
+                z-index: 40;
             }
         }
 
@@ -89,6 +91,8 @@
                 hasDateClickContextMenu: @js($hasDateClickContextMenu),
                 hasDateSelectContextMenu: @js($hasDateSelectContextMenu),
                 hasEventClickContextMenu: @js($hasEventClickContextMenu),
+                hasFreeEventClickContextMenu: @js($hasFreeEventClickContextMenu),
+                hasMyEventClickContextMenu: @js($hasMyEventClickContextMenu),
                 hasNoEventsClickContextMenu: @js($hasNoEventsClickContextMenu),
                 options: @js($this->getOptions()),
                 dayHeaderFormat: {{$dayHeaderFormatJs}},
@@ -100,4 +104,28 @@
         </div>
     </x-filament::section>
     <x-filament-actions::modals/>
+    <x-filament::modal
+        icon="heroicon-o-exclamation-triangle"
+        icon-color="danger"
+        id="calendar-loading"
+    >
+        <x-slot name="heading">
+            {{__('app.something_went_wrong')}}
+        </x-slot>
+        <x-slot name="description">
+            {{__('app.failed_description')}}
+        </x-slot>
+    </x-filament::modal>
+    <x-filament::modal
+        icon="heroicon-o-exclamation-triangle"
+        icon-color="danger"
+        id="reservation-failed-modal"
+    >
+        <x-slot name="heading">
+            {{__('app.something_went_wrong')}}
+        </x-slot>
+        <x-slot name="description">
+            {{__('app.failed_description')}}
+        </x-slot>
+    </x-filament::modal>
 </x-filament-widgets::widget>

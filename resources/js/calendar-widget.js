@@ -1,6 +1,6 @@
 export default function calendarWidget({
                                            view = 'dayGridMonth',
-                                           locale = 'en',
+                                           locale = 'nl',
                                            firstDay = 1,
                                            events = [],
                                            eventContent = null,
@@ -154,13 +154,19 @@ export default function calendarWidget({
                     };
                 };
             }
+            console.log('HELLO!');
 
             if (eventClickEnabled) {
                 settings.eventClick = (info) => {
+                    console.log('clicked event!');
                     if (info.event.extendedProps.url) {
                         const target = info.event.extendedProps.url_target ?? '_blank';
                         window.open(info.event.extendedProps.url, target);
                     } else if (hasEventClickContextMenu) {
+                        if (info.event.extendedProps.type === 'Blocked' || info.event.extendedProps.type === 'Closed' || info.event.extendedProps.type === 'PastFreeSpot') {
+                            return;
+                        }
+
                         self.$el.querySelector('[calendar-context-menu]').dispatchEvent(new CustomEvent('calendar--open-menu', {
                             detail: {
                                 mountData: {
@@ -168,10 +174,16 @@ export default function calendarWidget({
                                     view: info.view,
                                 },
                                 jsEvent: info.jsEvent,
-                                context: 'eventClick',
+                                context: info.event.extendedProps.type === 'Free' ? 'freeEventClick' :
+                                    info.event.extendedProps.type === 'MyEvent' ? 'myEventClick' :
+                                        info.event.extendedProps.type === 'Closed' ? 'closedEventClick' :
+                                            info.event.extendedProps.type === 'Event' ? 'eventClick' :
+                                            info.event.extendedProps.type === 'MyPastEvent' ? 'myPastEventClick' :
+                                                'none'
                             },
                         }));
                     } else {
+                        console.log('insihde event click');
                         this.$wire.onEventClick({
                             event: info.event,
                             view: info.view,
@@ -180,8 +192,8 @@ export default function calendarWidget({
                 };
             }
 
-
             if (noEventsClickEnabled) {
+                console.log('clicked no event!');
                 settings.noEventsClick = (info) => {
                     if (hasNoEventsClickContextMenu) {
                         self.$el.querySelector('[calendar-context-menu]').dispatchEvent(new CustomEvent('calendar--open-menu', {
@@ -196,6 +208,7 @@ export default function calendarWidget({
                     } else {
                         this.$wire.onNoEventsClick({
                             view: info.view,
+                            event: info.event,
                         });
                     }
                 }
@@ -266,15 +279,33 @@ export default function calendarWidget({
 
             this.ec = new EventCalendar(this.$el.querySelector('div'), {
                 ...settings,
-                ...options
+                ...options,
+                timeZone: 'Europe/Brussels',
+                allDaySlot: false,
+                loading: (isLoading) => this.$wire.handleLoading(isLoading),
+                // headerToolbar: {start: 'title', center: '', end: 'today prev,next'},
+            });
+
+            console.log(this.ec);
+
+            document.addEventListener('.ec-next', () => {
+                console.log('next clicked!')
             });
 
             window.addEventListener('calendar--refresh', () => {
+                console.log('inside calendar-refresh');
                 this.ec.refetchEvents();
             });
 
             this.$wire.on('calendar--set', (data) => {
+                console.log('inside calendar-set');
+                // console.log('calendar--set', data);
                 this.ec.setOption(data.key, data.value);
+
+                // console.log(self.$el, self.$el.querySelectorAll('.ec-event'));
+                // self.$el.querySelectorAll('.ec-event').forEach((item) => item.addEventListener('click', (event) => {
+                //     console.log('event clicked! with queryselector');
+                // }));
             });
         },
 

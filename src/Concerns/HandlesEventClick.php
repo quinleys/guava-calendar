@@ -22,16 +22,30 @@ trait HandlesEventClick
         return $this->evaluate($this->defaultEventClickAction);
     }
 
+    public function handleLoading(bool $loading)
+    {
+        info($loading);
+        if ($loading) {
+            $this->dispatch('open-modal', ['id' => 'calendar-loading']);
+        } else {
+            $this->dispatch('close-modal', ['id' => 'calendar-loading']);
+        }
+//        $this->dispatch('open-modal', id: 'calendar-loading');
+//        $this->dispatch('close-modal', id: 'calendar-loading');
+//        dd('handle loading', $loading);
+//        $this->dispatch('open-modal', ['id' => 'calendar-loading']);
+    }
+
     public function onEventClick(array $info = [], ?string $action = null): void
     {
         try {
-            $model = data_get($info, 'event.extendedProps.model');
-            $key = data_get($info, 'event.extendedProps.key');
+            $model = data_get($info, 'event . extendedProps . model');
+            $key = data_get($info, 'event . extendedProps . key');
 
             if ($model && $key) {
                 $this->resolveEventRecord($model, $key);
 
-                $action ??= data_get($info, 'event.extendedProps.action', $this->getDefaultEventClickAction());
+                $action ??= data_get($info, 'event . extendedProps . action', $this->getDefaultEventClickAction());
 
                 if ($action) {
                     $this->authorize(match ($action) {

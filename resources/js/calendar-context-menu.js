@@ -24,6 +24,7 @@ export default function calendarContextMenu() {
                 z-index: 40;
                 top: ${this.position.y}px;
                 left: ${this.position.x}px;
+                visibility: ${this.open ? 'visible' : 'hidden'};
                 `;
             },
             ['x-on:click.away']() {
@@ -39,6 +40,8 @@ export default function calendarContextMenu() {
             };
 
             this.$el.addEventListener('calendar--open-menu', (event) => this.openMenu(event));
+
+            console.log()
         },
 
         openMenu: function (event) {
@@ -46,19 +49,26 @@ export default function calendarContextMenu() {
             this.mountData = event.detail.mountData;
 
             this.$nextTick(() => {
-                const clientX = event.detail.jsEvent.clientX;
+                // const clientX = event.detail.jsEvent.clientX;
                 const clientY = event.detail.jsEvent.clientY;
                 const pageX = event.detail.jsEvent.pageX;
+
                 const pageY = event.detail.jsEvent.pageY;
 
-                const offsetX = clientX + this.size.width > window.innerWidth
-                    ? clientX + this.size.width - window.innerWidth
-                    : 0;
+                // if mobile device, don't calculate offset
+                if (window.innerWidth < 1024) {
+                    this.position.x = 0;
+                    this.position.y = pageY;
+                    this.open = true;
+                    return;
+                }
+
+                // const offsetX = 300;
                 const offsetY = clientY + this.size.height > window.innerHeight
                     ? clientY + this.size.height - window.innerHeight
                     : 0;
 
-                this.position.x = pageX - offsetX;
+                this.position.x = (pageX - (window.innerWidth / 3)) + (this.size.width / 2);
                 this.position.y = pageY - offsetY;
                 this.open = true;
             });

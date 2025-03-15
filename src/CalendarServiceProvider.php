@@ -23,8 +23,7 @@ class CalendarServiceProvider extends PackageServiceProvider
         $package
             ->name('guava-calendar')
             ->hasTranslations()
-            ->hasViews()
-        ;
+            ->hasViews();
     }
 
     public function packageBooted()
@@ -41,8 +40,8 @@ class CalendarServiceProvider extends PackageServiceProvider
                     'calendar-context-menu',
                     __DIR__ . '/../dist/js/calendar-context-menu.js',
                 ),
-                Css::make('calendar-styles', 'https://cdn.jsdelivr.net/npm/@event-calendar/build@3.8.0/event-calendar.min.css'),
-                Js::make('calendar-script', 'https://cdn.jsdelivr.net/npm/@event-calendar/build@3.8.0/event-calendar.min.js'),
+                Css::make('calendar-styles', 'https://cdn.jsdelivr.net/npm/@event-calendar/build@3.10.0/event-calendar.min.css'),
+                Js::make('calendar-script', 'https://cdn.jsdelivr.net/npm/@event-calendar/build@3.10.0/event-calendar.min.js'),
             ],
             package: 'guava/calendar'
         );
