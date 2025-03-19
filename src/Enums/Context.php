@@ -13,4 +13,5 @@ enum Context: string
     case NoEventsClick = 'noEventsClick';
     case ClosedClick = 'closedClick';
     case MyPastEventClick = 'myPastEventClick';
+    case BlockEventClick = 'blockEventClick';
 }

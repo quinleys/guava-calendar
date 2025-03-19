@@ -8,6 +8,7 @@
     $myEventClickContextMenuActions = $this->getCachedMyEventClickContextMenuActions();
     $myPastEventClickContextMenuActions = $this->getCachedMyPastEventClickContextMenuActions();
     $noEventsClickContextMenuActions = $this->getCachedNoEventsClickContextMenuActions();
+    $blockEventClickContextMenuActions = $this->getCachedBlockEventClickContextMenuActions();
 
 //    @dd($eventClickContextMenuActions, $freeEventClickContextMenuActions);
     $hasContextMenu = $this->hasContextMenu();
@@ -29,6 +30,7 @@
             || context == @js(Context::EventClick) && @js(empty($eventClickContextMenuActions))
             || context == @js(Context::FreeEventClick) && @js(empty($freeEventClickContextMenuActions))
             || context == @js(Context::MyPastEventClick) && @js(empty($myPastEventClickContextMenuActions))
+            || context == @js(Context::BlockEventClick) && @js(empty($blockEventClickContextMenuActions))
             || context == @js(Context::MyEventClick) && @js(empty($myEventClickContextMenuActions))
             || context == @js(Context::NoEventsClick) && @js(empty($noEventsClickContextMenuActions))) {
                 return 'hidden';
@@ -36,9 +38,9 @@
                 return '';
             }
          "
-                @class([
-                   "invisible fi-dropdown-panel absolute w-screen max-w-xs divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-800 dark:ring-white/10",
-               ])
+            @class([
+               "invisible fi-dropdown-panel absolute w-screen max-w-xs divide-y divide-gray-100 rounded-lg bg-white shadow-lg ring-1 ring-gray-950/5 transition dark:divide-white/5 dark:bg-gray-800 dark:ring-white/10",
+           ])
         >
             <div>
                 <x-filament::dropdown.list x-show="context == '{{Context::DateClick}}'">
@@ -73,6 +75,11 @@
                 </x-filament::dropdown.list>
                 <x-filament::dropdown.list x-show="context == '{{Context::MyPastEventClick}}'">
                     @foreach ($myPastEventClickContextMenuActions as $action)
+                        {{ $action }}
+                    @endforeach
+                </x-filament::dropdown.list>
+                <x-filament::dropdown.list x-show="context == '{{Context::BlockEventClick}}'">
+                    @foreach ($blockEventClickContextMenuActions as $action)
                         {{ $action }}
                     @endforeach
                 </x-filament::dropdown.list>

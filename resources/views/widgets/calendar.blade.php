@@ -12,6 +12,7 @@
     $hasDateClickContextMenu = !empty($this->getCachedDateClickContextMenuActions());
     $hasDateSelectContextMenu = !empty($this->getCachedDateSelectContextMenuActions());
     $hasEventClickContextMenu = !empty($this->getCachedEventClickContextMenuActions());
+    $hasBlockEventClickContextMenu = !empty($this->getCachedBlockEventClickContextMenuActions());
     $hasFreeEventClickContextMenu = !empty($this->getCachedFreeEventClickContextMenuActions());
     $hasMyEventClickContextMenu = !empty($this->getCachedMyEventClickContextMenuActions());
     $hasNoEventsClickContextMenu = !empty($this->getCachedNoEventsClickContextMenuActions());
@@ -91,6 +92,7 @@
                 hasDateClickContextMenu: @js($hasDateClickContextMenu),
                 hasDateSelectContextMenu: @js($hasDateSelectContextMenu),
                 hasEventClickContextMenu: @js($hasEventClickContextMenu),
+                hasBlockEventClickContextMenu: @js($hasBlockEventClickContextMenu),
                 hasFreeEventClickContextMenu: @js($hasFreeEventClickContextMenu),
                 hasMyEventClickContextMenu: @js($hasMyEventClickContextMenu),
                 hasNoEventsClickContextMenu: @js($hasNoEventsClickContextMenu),

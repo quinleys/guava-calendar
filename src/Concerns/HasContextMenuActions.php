@@ -46,6 +46,14 @@ trait HasContextMenuActions
         foreach ($this->getClosedClickContextMenuActions() as $action) {
             $this->cacheContextMenuAction($action, Context::ClosedClick);
         }
+        foreach ($this->getBlockEventContextMenuActions() as $action) {
+            $this->cacheContextMenuAction($action, Context::BlockEventClick);
+        }
+    }
+
+    public function getBlockEventContextMenuActions(): array
+    {
+        return [];
     }
 
     public function getClosedClickContextMenuActions(): array
@@ -123,10 +131,14 @@ trait HasContextMenuActions
         return data_get($this->getCachedContextMenuActions(), Context::MyPastEventClick->value, []);
     }
 
-
     public function getCachedNoEventsClickContextMenuActions(): array
     {
         return data_get($this->getCachedContextMenuActions(), Context::NoEventsClick->value, []);
+    }
+
+    public function getCachedBlockEventClickContextMenuActions(): array
+    {
+        return data_get($this->getCachedContextMenuActions(), Context::BlockEventClick->value, []);
     }
 
     private function cacheContextMenuAction(Action $action, Context $context): void
@@ -146,6 +158,11 @@ trait HasContextMenuActions
             ->when(
                 $context === Context::MyPastEventClick,
                 fn($action) => $action->alpineClickHandler(fn($action) => "\$wire.onMyPastEventClick(mountData, '{$action->getName()}')"),
+                fn($action) => $action->alpineClickHandler(fn($action) => "\$wire.mountAction('{$action->getName()}', mountData)")
+            )
+            ->when(
+                $context === Context::BlockEventClick,
+                fn($action) => $action->alpineClickHandler(fn($action) => "\$wire.onBlockEventClick(mountData, '{$action->getName()}')"),
                 fn($action) => $action->alpineClickHandler(fn($action) => "\$wire.mountAction('{$action->getName()}', mountData)")
             )
             ->when(

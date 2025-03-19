@@ -40,8 +40,6 @@ export default function calendarContextMenu() {
             };
 
             this.$el.addEventListener('calendar--open-menu', (event) => this.openMenu(event));
-
-            console.log()
         },
 
         openMenu: function (event) {
