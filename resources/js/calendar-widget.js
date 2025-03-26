@@ -277,7 +277,7 @@ export default function calendarWidget({
             this.ec = new EventCalendar(this.$el.querySelector('div'), {
                 ...settings,
                 ...options,
-                slotMinTime: '08:00:00',
+                slotMinTime: '07:00:00',
                 timeZone: 'Europe/Brussels',
                 allDaySlot: false,
                 loading: (isLoading) => this.$wire.handleLoading(isLoading),
