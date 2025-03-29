@@ -66,6 +66,7 @@
         </x-slot>
 
         <div
+            class="custom-calendar-widget-container"
             wire:ignore
             x-ignore
             ax-load
